@@ -16,9 +16,10 @@ class PoliticianInfoSpider(scrapy.Spider):
         """
         Sends a HTTP request for each of the politician. (225)
         """
-        url = "https://www.parliament.lk/en/members-of-parliament/directory-of-members/viewMember/181"
-        for letter in ascii_lowercase:
-            yield scrapy.Request(url=url, callback=self.parse)
+        url = "https://www.parliament.lk/en/members-of-parliament/directory-of-members/viewMember/{mem_intranet_id}"
+        politicians = self.get_politicians()
+        for politician in politicians:
+            yield scrapy.Request(url=url.format(mem_intranet_id=politician["mem_intranet_id"]), callback=self.parse)
 
     def parse(self, response):
         """
@@ -57,5 +58,13 @@ class PoliticianInfoSpider(scrapy.Spider):
         committees = response.xpath('//div[@class="top-mp-detail-4"]/div/div/ul/li/a/text()').extract()
         politician = Politician(name=name, party=party, portfolio= portfolio, 
         electoral = electoral, dob = dob, civil_status = civil_status, religion = religion, occupation = occupation, career=career, committees=committees)
+        output = open("corpus/en/{mem_intranet_id}.json".format(mem_intranet_id = response.url.split("/")[-1]), "w+")
+        output.write(politician.toJSON())
         print(politician)
+
+    def get_politicians(self):
+        politician_list = open("politicians.json", "r")
+        arr = json.load(politician_list)
+        return arr
+
 

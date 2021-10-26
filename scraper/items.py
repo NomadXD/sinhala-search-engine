@@ -4,6 +4,7 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+import json
 
 class Politician(scrapy.Item):
     name = scrapy.Field()
@@ -16,4 +17,8 @@ class Politician(scrapy.Item):
     occupation = scrapy.Field()
     career = scrapy.Field()
     committees = scrapy.Field()
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
 
