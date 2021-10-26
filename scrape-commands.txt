@@ -1,0 +1,16 @@
+response.xpath('//h2[@class=""]/text()').extract()
+
+response.xpath('//div[@class="components-wrapper"]/h2/text()').get()
+
+response.xpath('//div[@class="bottomdiv1"]/table/tr/td/a/text()').extract()
+
+response.xpath('//div[@class="bottomdiv1"]/table/tr/td/text()').extract()[1].split("\r\n")[1].strip()
+
+portfolio or 
+response.xpath('//div[@class="bottomdiv1"]/table/tr/td/div/text()').extract()[1]
+
+response.xpath('//div[@class="left-wrap"]/div/table/tr/td').extract()
+
+response.xpath('//div[@class="top-mp-detail-3"]/div/pre/text()').extract()
+
+response.xpath('//div[@class="top-mp-detail-4"]/div/div/ul/li/a/text()').extract()
