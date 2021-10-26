@@ -2,11 +2,11 @@ import scrapy
 from string import ascii_lowercase
 import json
 
-class PoliticianSpider(scrapy.Spider):
+class PoliticianListSpider(scrapy.Spider):
     """
     PoliticianSpider scrapes the list of politicians from the parliament.lk website.
     """
-    name = "politicians"
+    name = "politician_list"
     politicians = []
 
     def start_requests(self):

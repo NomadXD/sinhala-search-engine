@@ -5,8 +5,15 @@
 
 import scrapy
 
+class Politician(scrapy.Item):
+    name = scrapy.Field()
+    party = scrapy.Field()
+    portfolio = scrapy.Field()
+    electoral = scrapy.Field()
+    dob = scrapy.Field()
+    civil_status = scrapy.Field()
+    religion = scrapy.Field()
+    occupation = scrapy.Field()
+    career = scrapy.Field()
+    committees = scrapy.Field()
 
-class ScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
