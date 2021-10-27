@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+    <link rel="icon" href="http://obj-cache.cloud.ruanbekker.com/favicon.ico">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Search Engine</title>
+
+  </head>
+  <body>
+
+  <div class="container">
+    <div style="background:transparent !important" class="jumbotron">
+      <div style="font-family: 'Noto Sans', sans-serif;">
+        <center>
+            <img src="../static/assets/logo.png" alt="" style="background-color: #8A0000;">
+        </center>
+        <p>
+          <center>
+          <font size="8">Search for Politicians</font>
+          </center>
+        </p>
+      </div>
+    </div>
+
+  <form action="/search/results" method="post">
+    <div class="input-group">
+      <input type="text" class="form-control input-lg" name="input" placeholder="Search"  autofocus>
+      <div class="input-group-btn">
+        <button class="btn btn-danger btn-lg" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <center>
+      <h4>Results: {{ res['hits']['total']['value'] }} </h1>
+  </center>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Occupation</th>
+        <th>Party</th>
+        <th>Portfolio</th>
+        <th>Religion</th>
+        <th>Electoral</th>
+        <th>Date of Birth</th>
+        <th>Career</th>
+        <th>Civil Status</th>
+        <th>Committees</th>
+      </tr>
+    </thead>
+
+{% for hit in res['hits']['hits'] %}
+    <tbody>
+      <tr>
+        <th scope="row">{{ hit['_source']['name'] }}</th>
+          <td>{{ hit['_source']['occupation'] }}</td>
+          <td>{{ hit['_source']['party'] }}</td>
+          <td>{{ hit['_source']['portfolio'] }}</td>
+          <td>{{ hit['_source']['religion'] }}</td>
+          <td>{{ hit['_source']['electoral'] }}</td>
+          <td>{{ hit['_source']['dob'] }}</td>
+          <td>{{ hit['_source']['career'] }}</td>
+          <td>{{ hit['_source']['civil_status'] }}</td>
+          <td>{{ hit['_source']['committees'] }}</td>
+      </tr>
+    </tbody>
+{% endfor %}
+  </table>
+
+        <footer class="footer">
+          <p>&copy; 2021 Lahiru Udayanga</p>
+        </footer>
+
+      </div>
+    </div>
+  </body>
+</html>
