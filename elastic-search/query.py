@@ -6,8 +6,10 @@ es_connection = EsManagement()
 # Query and filter contexts
 query = {
     "query": {
-        "multi_match": {
-            "query": "ගරු. අංගජන් රාමනාදන්, පා.ම."
+        "match": {
+            "name" : {
+                "query": "අංගජන් රාමනාදන්"
+            }
         }
     }
 }
@@ -15,5 +17,3 @@ query = {
 results = es_connection.es_client.search(index="sl_politicians", body=query)
 
 print(results)
-# Result
-#print([i["_source"]["title"] for i in results["hits"]["hits"]])
