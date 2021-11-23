@@ -30,15 +30,15 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Basic overview](#Basic-overview)
-* [Example demonstrations](#Example-demonstrations)
+* [Folder structure](#folder-structure)
+* [Basic overview](#basic-overview)
 * [License](#license)
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project is done as a part of module CS4642 - Data Mining and Information Retrieval. The main goal of this project is to practise the information retrieval theories and concepts like term frequency, document frequency, tf-idf model, different types of search queries etc. For this project, Sri Lankan parliment website is scraped to extract details about parliment ministers to build a dataset. The dataset contains 225 records which comprises of the following details about parliment ministers.
+This project is done as a part of module **CS4642 - Data Mining and Information Retrieval**. The main goal of this project is to practise the information retrieval theories and concepts like term frequency, document frequency, tf-idf model, different types of search queries etc. For this project, Sri Lankan parliment website is scraped to extract details about parliment ministers to build a dataset. The dataset contains 225 records which comprises of the following details about parliment ministers.
 
 1. Career
 2. Civil Status
@@ -184,11 +184,134 @@ python elastic-search/query.py
 ```
 6. Go to `http://localhost:5000/` and use the UI to search the politician information
 
+## Folder structure
+
+```
+project
+│   README.md -> Read me file
+│   politicians.json -> contain all the scraped politician list
+│   scrape-commands.txt -> commands used to scrape
+│   scrapy.cfg -> scrapy config     
+│
+└───assets -> contain assets like cover.png
+└───corpus
+│   │   translate.py -> translation script 
+│   │
+│   └─── en -> scraped original english files
+│   └─── si -> translated sinhala files (UTF-8)
+│   └─── si-unicode -> translated sinhala files (UNICODE)     
+│       
+└───elastic-search
+│   │   count-index.py -> returns the index doc number
+|   |   create-index.py -> helper to create index
+|   |   Dockerfile -> Dockerfile to build elastic search with ICU plugin
+|   |   inspect-index.py -> returns the index
+|   |   management.py -> core elastic search logic
+|   |   mappings.py -> define elastic search index fields
+|   |   populate-index.py -> populate index
+|   |   query.py -> sample test query
+|   |   settings.py -> elastic search index settings 
+|
+└───flask
+│   │   app.py -> main flask app server
+│   │   query-processor.py -> process user query
+│   │
+│   └───static -> contain static content
+│   └───templates -> contain html templates
+│   
+└───scraper
+│   │   items.py -> contains entities of scraping
+│   │   middleware.py -> scrapy middleware
+│   │   pipelines.py -> scrapy pipelines
+│   │   settings.py -> scrapy settings
+│   │
+│   └───spiders -> scrapy spiders
+│  
+
+```
+
 ## Basic overview
 
+### Index fields
 
+The following schema shows the fields of the considered index.
 
+```json
+    "properties": {
+        "name": {"type": "text"},
+        "occupation": {"type": "text"},
+        "party": {"type": "text"},
+        "portfolio": {"type": "text"},
+        "religion": {"type": "text"},
+        "electoral": {"type": "text"},
+        "dob": {"type": "text"},
+        "career": {"type": "text"},
+        "civil_status": {"type": "text"},
+        "committees": {"type": "text"},
+    }
+```
 
+### Index settings
+
+```json
+    "analysis": {
+        "analyzer": {
+            "indexing_analyzer": {
+                "type": "custom",
+                "char_filter": "character_filter",
+                "tokenizer": "icu_tokenizer",
+                "filter": [
+                    "n_gram_tokenizer"
+                ]
+            },
+            "search_analyzer": {
+                "type": "custom",
+                "char_filter": "character_filter",
+                "tokenizer": "icu_tokenizer",
+                "filter": [
+                    "stop_words"
+                ]
+            }
+        },
+        "filter": {
+            "n_gram_tokenizer": {
+                "type": "edge_ngram",
+                "min_gram": 2,
+                "max_gram": 15
+            },
+            "stop_words": {
+                "type": "stop",
+                "stopwords": [
+                    "හා",   
+                    "හෝ",
+                    "ද",
+                    "සහ",
+                    "ගීත",
+                    "ගී",
+                    "සින්දු"
+                ]
+            }
+        },
+        "char_filter": {
+            "character_filter": {
+                "type": "mapping",
+                "mappings": [
+                    "\u200d=>",
+                    "\u200B=>",
+                    ",=> ",
+                    ".=> ",
+                    "/=> ",
+                    "|=> ",
+                    "-=> ",
+                    "'=> ",
+                    "_=> ",
+                    ":=> "
+
+                ]
+            }
+        },
+    }
+```
 
 <!-- LICENSE -->
 ## License
