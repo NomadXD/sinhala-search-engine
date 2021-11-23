@@ -6,7 +6,7 @@ politician_settings = {
                 "char_filter": "character_filter",
                 "tokenizer": "icu_tokenizer",
                 "filter": [
-                    "n_gram_tockenizer"
+                    "n_gram_tokenizer"
                 ]
             },
             "search_analyzer": {
@@ -19,7 +19,7 @@ politician_settings = {
             }
         },
         "filter": {
-            "n_gram_tockenizer": {
+            "n_gram_tokenizer": {
                 "type": "edge_ngram",
                 "min_gram": 2,
                 "max_gram": 15
