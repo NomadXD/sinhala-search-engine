@@ -2,4 +2,6 @@
 scraper/__pycache__
 scraper/spiders/__pycache__
 elastic-search/__pycache__
+flask/__pycache__
 es.log
+flask.log
