@@ -24,5 +24,8 @@ class EsManagement:
         files = glob.glob(path+"/*")
         for file in files:
             data = open(file, "r")
-            politician = json.load(data)
-            self.es_client.index(index=index_name, body=json.dumps(politician))
+            try:
+                politician = json.load(data)
+                self.es_client.index(index=index_name, body=json.dumps(politician))
+            except:
+                print(file)
