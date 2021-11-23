@@ -16,8 +16,27 @@ def search_request():
         size=20, 
         body={
             "query": {
-                "multi_match" : {
-                    "query": search_term,
+                "bool" : {
+                    "should": [
+                        {
+                            "multi_match": {
+                                "query": search_term,
+                            }
+                        },
+                        {
+                            "multi_match": {
+                                "query": search_term,
+                                "operator": "and"
+                            }
+                        },
+                        {
+                            "multi_match": {
+                                "query": search_term,
+                                "type": "phrase",
+                                "boost": 2,
+                            }   
+                        }
+                    ]
                 }
             }
         }
