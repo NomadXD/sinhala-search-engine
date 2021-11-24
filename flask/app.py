@@ -2,8 +2,9 @@ import logging
 from flask import Flask, render_template, request
 from elasticsearch import Elasticsearch
 from query_processor import QueryProcessor
+import sys
 
-logging.basicConfig(filename="flask.log", level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
 app = Flask(__name__)
 es = Elasticsearch(HOST="http://localhost",PORT=9200)
@@ -18,10 +19,11 @@ def search_request():
     logging.info(f"Search query: {search_term}")
     queryProcessor = QueryProcessor()
     boost_list = queryProcessor.preprocessQuery(search_term)
+    print("Boost list:", boost_list)
     if (len(boost_list) == 0):
         logging.info("No field boosting")
         res = es.search(
-            index="sl_politicians", 
+            index="sl_politicians",
             size=20, 
             body={
                 "query": {
@@ -53,7 +55,7 @@ def search_request():
     else:
         logging.info("Field boosting")
         res = es.search(
-            index="sl_politicians", 
+            index="sl_politicians",
             size=20, 
             body={
                 "query": {
@@ -69,14 +71,14 @@ def search_request():
                                 "multi_match": {
                                     "query": search_term,
                                     "operator": "and",
-                                    "fields": boost_list
+                                    "boost": 5
                                 }
                             },
                             {
                                 "multi_match": {
                                     "query": search_term,
                                     "type": "phrase",
-                                    "boost": 2,
+                                    "boost": 10,
                                 }   
                             }
                         ]
