@@ -313,6 +313,14 @@ The following schema shows the fields of the considered index.
     }
 ```
 
+### Query flow
+
+[![Product Name Screen Shot][query-flow]](https://example.com)
+
+### Query breakdown
+
+[![Product Name Screen Shot][query-breakdown]](https://example.com)
+
 <!-- LICENSE -->
 ## License
 
@@ -320,3 +328,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 
 [product-screenshot]: assets/cover.png
+[query-flow]: assets/query-flow.png
+[query-breakdown]: assets/query-breakdown.png
